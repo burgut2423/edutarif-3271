@@ -104,3 +104,18 @@ standart autentifikatsiyadan foydalaning; parollarni chatga yubormang.
 - https://lex.uz/acts/-8584243 (2026-11-11, 617-son qaror)
 - https://lex.uz/uz/acts/-7793627 (3271-1)
 - MMTV 10.04.2026, 133-son buyruq — 2026/2027 o‘quv yiliga mo‘ljallangan tayanch o‘quv reja.
+
+## AI agentlar uchun davom ettirish skill'i
+
+Loyiha boshqa AI agentlar (Codex, Claude Code, Cursor, GitHub Copilot va boshqalar) ishni
+izchil davom ettirishi uchun alohida hujjatlar bilan taʼminlangan:
+
+- **`AGENTS.md`** — barcha AI agentlar uchun majburiy xavfsizlik, biznes va workflow qoidalari.
+- **`skills/edutarif-development/SKILL.md`** — asosiy portable skill (YAML frontmatter va bosqichma-bosqich protokol).
+- **`skills/edutarif-development/references/`** — 3271, 823, arxitektura, test, xavfsizlik, integratsiya, UX/workflow va backlog.
+- **`docs/AI_HANDOFF.md`** — keyingi agentga aniq holat, bajarilmagan ishlar va tayyor start prompt.
+- **`CLAUDE.md`, `.github/copilot-instructions.md`** — agentlardan avtomatik o‘qilishi mumkin bo‘lgan kirish ko‘rsatmalari.
+
+Agentga boshlash topshirig‘i: *`AGENTS.md` va `docs/AI_HANDOFF.md` ni o‘qi,
+`skills/edutarif-development/SKILL.md` ga amal qil, birinchi P0 taskni test bilan bajar.*
+Skill huquqiy ekspertiza yoki haqiqiy moliyaviy tasdiq o‘rnini bosmaydi.

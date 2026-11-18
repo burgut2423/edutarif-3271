@@ -14,7 +14,7 @@
 | Ustama | `app/controllers/bonus.py` | 823 davr, baholash, majlis, tasdiq |
 | Qoidalar | `app/services.py` | 3271/823 prototip; hisoblar hardcoded |
 | View | `app/templates/*`, `app/static/*` | server-rendered Jinja + Bootstrap |
-| DB | `app/models.py` | SQLAlchemy, migratsiyasiz schema |
+| DB | `app/models.py` | SQLAlchemy, Alembic 20261119_01 baseline |
 | Test | `tests/test_rules.py`, `test_http.py`, `test_bonus_http.py` | unit va `TestClient` HTTP regression |
 
 ## ORM inventari (haqiqatan kodda mavjud)
@@ -54,7 +54,7 @@ app/
   services/               # workflow/use-case transactions
   controllers/            # HTTP only, no direct complex legal math
   templates/             # Uzbek UI, district/school/teacher
-  migrations/            # Alembic revision files (future)
+# Alembic rootdagi migrations/ papkasida mavjud; app/migrations/ yo‘q.
 ```
 
 Bu **taklif**: hozir bu papkalar yo‘q. Agent ularni yaratsa, oldin kerakli `app/services.py` funksiyalarini mavjud testlar bilan qayta yo‘naltirsin.
@@ -72,7 +72,7 @@ Bu **taklif**: hozir bu papkalar yo‘q. Agent ularni yaratsa, oldin kerakli `ap
 9. `BonusMeeting` yig‘indi sonlarni saqlaydi; haqiqiy a'zolik/ishtirok/vote/COI/elektron imzo uchun yangi jadvallar kerak.
 10. `PolicyVersion` bor, ammo hisoblash servislariga to‘liq ulanmagan. Sxema uchun `policy_version_id` har tasdiqlangan qarorda saqlansin.
 11. `AuditLog` oddiy text; o‘chirilmas append-only log, old/new snapshot, correlation_id va IP/device muvofiq maxfiylik siyosati kerak.
-12. **Alembic yo‘q**; ishlab chiqarish DB ga `Base.metadata.create_all` bilan versiyaviy o‘zgarish kiritish taqiqlansin.
+12. **Alembic 20261119_01 mavjud**; ishlab chiqarish DB ga `Base.metadata.create_all` bilan versiyaviy o‘zgarish kiritish taqiqlansin; yangi modelga yangi revision kerak.
 
 ## Atomiklik / izchillik
 

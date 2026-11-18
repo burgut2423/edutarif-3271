@@ -1,0 +1,58 @@
+digraph EduTarif {
+  graph [label="EduTarif 3271/823 | Ma'lumotlar bazasi skeleti (20 jadval)", labelloc=t,
+    fontname="DejaVu Sans", fontsize=22, bgcolor="#F5F8FD", pad="0.5", ranksep="1.1", nodesep="0.42", rankdir=LR,
+    splines=polyline, outputorder=edgesfirst];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=12, margin="0.16,0.11", color="#CEDAE8", fillcolor="white", fontcolor="#18304A", penwidth=1.4];
+  edge [color="#8BA2B9", penwidth=1.15, arrowhead=vee, arrowsize=0.65];
+  subgraph cluster_geo { label="TUMAN / KIRISH"; color="#B9D7E2"; style="rounded,filled"; fillcolor="#EAF8FB";
+    districts [label="DISTRICTS\nTumanlar"];
+    schools [label="SCHOOLS\nMaktablar"];
+    users [label="USERS\nRollar va login"];
+    audit_logs [label="AUDIT_LOGS\nO'zgarish tarixi"];
+    notifications [label="NOTIFICATIONS\nXabarlar"];
+  }
+  subgraph cluster_edu { label="O'QUV REJA / DARS"; color="#B4C8E9"; style="rounded,filled"; fillcolor="#EEF4FD";
+    academic_years [label="ACADEMIC_YEARS\nO'quv yili"];
+    subjects [label="SUBJECTS\nFan katalogi"];
+    class_groups [label="CLASS_GROUPS\n1-11-sinflar"];
+    curriculum_lines [label="CURRICULUM_LINES\nFan-soat setkasi"];
+    employees [label="EMPLOYEES\nXodimlar"];
+    employee_subjects [label="EMPLOYEE_SUBJECTS\nFan mutaxassisligi"];
+    council_decisions [label="COUNCIL_DECISIONS\nKengash qarori"];
+    allocations [label="ALLOCATIONS\nDars soati"];
+    hour_change_requests [label="HOUR_CHANGE_REQUESTS\nO'tkazish/almashtirish"];
+  }
+  subgraph cluster_bonus { label="823 / USTAMA"; color="#D6C4F4"; style="rounded,filled"; fillcolor="#F5F0FF";
+    bonus_periods [label="BONUS_PERIODS\nDavr/fond"];
+    bonus_assessments [label="BONUS_ASSESSMENTS\nBaholash"];
+    bonus_criteria [label="BONUS_CRITERIA\nMezon"];
+    bonus_criterion_scores [label="BONUS_CRITERION_SCORES\nMezon-ball"];
+    bonus_meetings [label="BONUS_MEETINGS\nMajlis/ovoz"];
+  }
+  subgraph cluster_policy { label="NORMATIV"; color="#B9E4CE"; style="rounded,filled"; fillcolor="#EFFAF3";
+    policy_versions [label="POLICY_VERSIONS\n3271/823 versiyalari"];
+  }
+  districts -> schools;
+  schools -> users;
+  schools -> employees;
+  schools -> class_groups;
+  schools -> bonus_periods;
+  schools -> council_decisions;
+  users -> notifications;
+  users -> audit_logs;
+  academic_years -> class_groups;
+  academic_years -> bonus_periods;
+  subjects -> employee_subjects;
+  employees -> employee_subjects;
+  class_groups -> curriculum_lines;
+  subjects -> curriculum_lines;
+  curriculum_lines -> allocations;
+  employees -> allocations;
+  council_decisions -> allocations;
+  allocations -> hour_change_requests;
+  bonus_periods -> bonus_assessments;
+  employees -> bonus_assessments;
+  bonus_assessments -> bonus_criterion_scores;
+  bonus_criteria -> bonus_criterion_scores;
+  bonus_periods -> bonus_meetings;
+}

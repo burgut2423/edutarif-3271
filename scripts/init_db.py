@@ -1,6 +1,7 @@
-"""Database tables and generic subject catalog. No official curriculum hours are seeded."""
+"""DEVELOPMENT seed only. Generic subjects, NOT official curriculum hours."""
 from sqlalchemy import select
-from app.db import Base, engine, SessionLocal
+from app.db import SessionLocal
+from scripts.db_migrate import migrate_to_head
 from app.models import District, AcademicYear, Subject, PolicyVersion
 from datetime import date
 
@@ -17,7 +18,7 @@ SUBJECTS = [
 ]
 
 def init():
-    Base.metadata.create_all(engine)
+    migrate_to_head()
     with SessionLocal() as db:
         if not db.scalar(select(District).limit(1)):
             db.add(District(name="Qo‘shko‘pir tumani"))

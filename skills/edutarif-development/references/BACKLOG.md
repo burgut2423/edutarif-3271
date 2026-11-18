@@ -6,6 +6,8 @@ Bu *master task list*. Agent vazifani tanlaganda `TASK ID`, dependency, acceptan
 
 ### P0-01 — Alembic va DB sxema migratsiyalari
 
+**Holat: PARTIAL (SQLite testlari OK; izolatsiyalangan PostgreSQL upgrade/downgrade tekshiruvi, backup/restore talab qilinadi).**
+
 **Dependency:** yo‘q. **Done when:** mavjud SQLAlchemy modellardan Alembic initial migration, SQLite dev + PostgreSQL testida upgrade/downgrade sinovi; `init_db` faqat development uchun; kelajak sxema o‘zgarishi maʼlumot yo‘qotmasdan. `README` yangilangan. **Risk:** real DBga qo‘llashdan oldin backup va operator tekshiruvi.
 
 ### P0-02 — Tenant/RBAC xavfsizligini to‘liq taftish

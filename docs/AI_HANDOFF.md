@@ -1,12 +1,12 @@
 # AI handoff / boshqa agentga loyiha topshirish
 
-**Last verified:** 2026-11-19 (repo file inventory and tests inspected). **Status:** GitHub private repository `burgut2423/edutarif-3271`, branch `main`. Ushbu handoff vazifa tugagach yangilanadi.
+**Last verified:** 2026-11-19 (P0-01 initial migration, SQLite test, ER schema). **Status:** GitHub private repository `burgut2423/edutarif-3271`, branch `main`. Ushbu handoff vazifa tugagach yangilanadi.
 
 ## Agent uchun 60 soniyalik xulosa
 
 - **Nima:** 3271 dars taqsimoti + 823 ustama uchun tuman, maktab, o‘qituvchi, ishchi guruh web MVP.
-- **Nimasi bor:** `app/main.py`, 5 controller (auth, district, school, teacher, bonus), `app/models.py` dagi 19 model, `app/services.py` hisoblash prototipi, Jinja/Bootstrap sahifalari, CSV eksport, dastlabki testlar.
-- **Nimasi yo‘q:** Alembic, to‘liq 133-son fan-by-grade reja importi, normativga mos yillik 2322 hisob, haqiqiy 823 kriteriy/evidence/working group, rasmiy ERP/UzASBO API, production security hardening.
+- **Nimasi bor:** `app/main.py`, 5 controller (auth, district, school, teacher, bonus), `app/models.py` dagi 20 model, `app/services.py` hisoblash prototipi, Jinja/Bootstrap sahifalari, CSV eksport, dastlabki testlar.
+- **Nimasi yo‘q:** PostgreSQL migratsiya sinovi, to‘liq 133-son fan-by-grade reja importi, normativga mos yillik 2322 hisob, haqiqiy 823 kriteriy/evidence/working group, rasmiy ERP/UzASBO API, production security hardening.
 - **Haqiqiy xavf:** MVP algoritmni yakuniy mehnat haqi yoki normativ qaror deb ishlatish noto‘g‘ri.
 - **Birinchi ish:** `AGENTS.md`, `skills/edutarif-development/SKILL.md`, kerakli `references/*.md` fayl; `pytest -q`; `git status`.
 - **Backlog:** `skills/edutarif-development/references/BACKLOG.md` (P0-01..P2-05).
@@ -29,12 +29,12 @@
 1. Backend Python FastAPI/SQLAlchemy; UI server-side Jinja + Bootstrap (AdminLTE-ga o‘xshash).
 2. Tuman admin maktab va umumiy katalogni boshqaradi, maktab admin xodim/setka/soat jarayonini boshqaradi, o‘qituvchi o‘z arizalarini beradi, 823 alohida ishchi guruh vakolatida.
 3. Faqat official legal sources, effective dates. No automatic state-certified salary decisions.
-4. PostgreSQL production target, SQLite tests. Migration must be introduced before real deployment.
+4. PostgreSQL production target, SQLite tests. Initial Alembic migration exists; dedicated PostgreSQL validation remains mandatory before production.
 5. GitHub Private repository. Never commit `.env`, real PII, passwords, signing keys, DB.
 
 ## Navbatdagi ishlar (aniq tartib)
 
-- **NEXT 1 — P0-01:** Alembic schema migration o‘rnatish, DB revision run; tests.
+- **NEXT 1 — P0-01:** Alembic initial schema SQLite tekshirildi; faqat izolyatsiyalangan PostgreSQL test va backup/restore drill qolgan.
 - **NEXT 2 — P0-02:** barcha route uchun tenant/role/CSRF matrix va regressiya testlari.
 - **NEXT 3 — P0-03:** 3271 legal policy + credential+priority proof versioning.
 
@@ -53,11 +53,20 @@ Qolgan ishlar, dependency va acceptance criteria: `skills/edutarif-development/r
 
 ### Latest change
 
+- **2026-11-19 — P0-01 initial DB migration (current):**
+  `alembic.ini`, `migrations/env.py`, `migrations/versions/20261119_01_baseline_schema_20_tables.py`,
+  `scripts/db_migrate.py`, `scripts/schema_report.py`, `tests/test_migrations.py` qo‘shildi.
+  `scripts/init_db.py` endi `create_all()` ishlatmaydi (faqat development seed);
+  `scripts/bootstrap_admin.py` Alembicga o‘tdi va districtni yaratadi.
+  `docs/DB_SCHEMA.md` 20 ta mavjud jadval ER sxemasi, `docs/UI_WIREFRAMES.md` 3 rol ekranlari maketi.
+  SQLite clean install, idempotent upgrade, data survive, downgrade, legacy DB refuse testlari o‘tgan.
+  **Qoldi:** real PostgreSQL migration smoke test/backup drill, production hardening (P0-02 va P0-08).
+
 - **2026-11-19 — AI agent hujjatlari qo‘shildi:** `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/edutarif.mdc`, `.claude/skills/edutarif-development/SKILL.md`, `.github/copilot-instructions.md`, `skills/edutarif-development/SKILL.md`, `references/` va `docs/AI_HANDOFF.md`. Kodning mavjud ish mantiqi o‘zgartirilmagan.
 
 ### Done / Tests
 
-- `47` ta dastlabki loyiha fayli GitHubga oldin yuklangan; yangi skill fayllari ushbu handoff commitida qo‘shiladi.
+- Baseline 20 ta table, 3 ta Alembic migratsiya testi qo‘shildi; keyingi commitda CI testlari tekshiriladi.
 - Bu hujjat faqat onboarding; to‘liq yuridik/moliya ekspertizasi o‘tkazilmagan.
 
 ### Blockers / questions

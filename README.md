@@ -18,6 +18,7 @@ py -m venv .venv
 pip install -r requirements.txt
 Copy-Item .env.example .env
 # .env faylida SESSION_SECRET (64+ tasodifiy belgi) va BOOTSTRAP_PASSWORD ni almashtiring
+python -m scripts.db_migrate  # Alembic migration
 python -m scripts.bootstrap_admin
 uvicorn app.main:app --reload
 ```
@@ -30,11 +31,23 @@ Linux/macOS: `python3 -m venv .venv && source .venv/bin/activate`,
 ### PostgreSQL
 
 Ishlab chiqarish uchun `DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/edutarif`.
-`python -m scripts.init_db` jadvallarni birinchi marta yaratadi. Alembic migratsiyalari
-hozircha yo‘q; production maʼlumotlarida `create_all` ni migratsiya o‘rnida ishlatmang.
+`python -m scripts.db_migrate` yoki `alembic upgrade head` sxemani
+Alembic orqali yaratadi. `python -m scripts.init_db` faqat **development**
+uchun namunaviy tuman, fanlar, yil va taxminiy policy qiymatlarini qo‘shadi;
+rasmiy fan-soat rejasini bermaydi. `python -m scripts.bootstrap_admin` migratsiyani
+yana tekshiradi va administratorni yaratadi (fuqarolarning real maʼlumoti yo‘q).
+**Eski `create_all()` bazasi avtomatik upgrade qilinmaydi**: zaxira nusxasi,
+`python -m scripts.schema_report` va operator tomonidan schema parity auditdan
+keyingina `alembic stamp 20261119_01` qo‘llansin. Tafsilotlar: `docs/DB_SCHEMA.md`.
+
+Alohida ajratilgan bo‘sh PostgreSQL sinov bazasida migratsiyani tekshiring,
+keyin production deploymentdan avval `alembic upgrade head`ni alohida release
+bosqichida ishlating. `downgrade base` **barcha jadvallarni o‘chiradi**: hech
+qachon haqiqiy bazada sinov maqsadida ishlatmang.
 
 Docker Compose uchun `.env`da `POSTGRES_PASSWORD` va yuqoridagi maxfiy sozlamalar,
-`docker compose up -d --build`, keyin `docker compose exec web python -m scripts.bootstrap_admin`.
+`docker compose up -d --build`, keyin `docker compose exec web alembic upgrade head` va
+`docker compose exec web python -m scripts.bootstrap_admin`.
 
 ## Rollar
 
@@ -62,7 +75,10 @@ Docker Compose uchun `.env`da `POSTGRES_PASSWORD` va yuqoridagi maxfiy sozlamala
 - `app/services.py` — 3271 ustuvorlik, stavka va 823 foiz / fond hisoblash biznes qoidalari.
 - `app/templates/` — adaptiv AdminLTE uslubidagi Bootstrap sahifalar (server rendered view).
 - `app/security.py` — parol xeshlash, session, CSRF va kirish huquqlari.
-- `scripts/` — boshlang‘ich maktab maʼlumotnomalari va administrator yaratish.
+- `scripts/` — Alembic migratsiyasi, development seed va administrator yaratish.
+- `migrations/` — review qilinadigan versiyali database schema.
+- `docs/DB_SCHEMA.md` — ER skelet va eski baza xavfsiz ko‘chirish.
+- `docs/UI_WIREFRAMES.md` — maketlar va dashboard dizayn spetsifikatsiyasi.
 - `docs/REGULATIONS.md` — normativ xarita, kamchilik va bosqichlar.
 - `tests/` — dastlabki unit / HTTP testlar.
 
@@ -71,7 +87,7 @@ Docker Compose uchun `.env`da `POSTGRES_PASSWORD` va yuqoridagi maxfiy sozlamala
 PBKDF2 SHA-256 (420,000 iteratsiya), imzolangan sessiya cookie, CSRF, rol va maktab
 chegarasi tekshiruvlari, audit mavjud. HTTPS bilan `COOKIE_SECURE=true` qo‘ying.
 Login rate-limit, 2FA, maxfiy hujjatlar uchun server-side fayl saqlash, backup,
-maʼlumotlarni himoya qilish / data retention, integratsiya ruxsatlari, migratsiyalar,
+maʼlumotlarni himoya qilish / data retention, integratsiya ruxsatlari, migratsiya deploy nazorati,
 PostgreSQL tranzaksiya blokirovkalari hamda to‘liq pen-test **production oldidan zarur**.
 
 Hech qachon `.env`, haqiqiy xodim maʼlumotlari va foydalanuvchi parollarini GitHub'ga yuklamang.

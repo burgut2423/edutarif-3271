@@ -23,7 +23,7 @@ Ushbu skill `burgut2423/edutarif-3271` repositorysida **yangi funksiya**, xatoli
 ## Koddan boshlang, taxminlardan emas
 
 - **Backend:** FastAPI `app/main.py`; controllerlar `app/controllers/`.
-- **ORM:** `app/models.py`; hozir Alembic migratsiya yo‘q.
+- **ORM:** `app/models.py`; initial Alembic migratsiya `migrations/versions/20261119_01_baseline_schema_20_tables.py` (PostgreSQL sinovi alohida).
 - **Biznes:** `app/services.py`: `priority_rank`, `qualified`, `used_rate`, `validate_allocation`, `distribution_preview`, `bonus_rate`, `bonus_cap_ok`, `bonus_fund_ok`, `audit`.
 - **UI:** `app/templates/*.html`, `app/static/*`; Bootstrap 5.3 — AdminLTE uslubidagi hozirgi dizayn.
 - **Testlar:** `tests/test_rules.py`, `tests/test_http.py`, `tests/test_bonus_http.py` va fixture `tests/conftest.py`.

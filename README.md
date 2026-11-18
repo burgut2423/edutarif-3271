@@ -94,20 +94,16 @@ Hech qachon `.env`, haqiqiy xodim maʼlumotlari va foydalanuvchi parollarini Git
 
 ## GitHub
 
-Bu arxiv yangi repositoryga push qilishga tayyor. GitHub'da bo‘sh PRIVATE repository
-(`edutarif-3271`) oching, so‘ng:
+Joriy Private repository: `https://github.com/burgut2423/edutarif-3271`.
+Clone qilish:
 
 ```bash
-git init
-git add .
-git commit -m "Initial EduTarif MVP"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/edutarif-3271.git
-git push -u origin main
+git clone https://github.com/burgut2423/edutarif-3271.git
+cd edutarif-3271
 ```
 
-Agar GitHub login bilan HTTPS token talab qilsa, GitHub CLI yoki credential manager bilan
-standart autentifikatsiyadan foydalaning; parollarni chatga yubormang.
+Repo mavjud; yangi bo‘sh repository yaratish kerak emas. GitHub tokenlarini
+chatga yoki `.env`ga kod bilan birga commit qilmang.
 
 ## Test
 

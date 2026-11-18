@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block title %}Bosh sahifa{% endblock %}{% block content %}
+<div class="page-title"><div><div class="eyebrow">BOSHQARUV MARKAZI</div><h1>Umumiy ko‘rsatkichlar</h1><p>Jarayonlar, yuklamalar va so‘rovlarni yagona sahifadan kuzating.</p></div><span class="status-pill">● Tizim faol</span></div>
+<div class="stats-grid">{% for key,value in stats.items() %}<div class="stat-card"><div class="stat-icon">{{ {'schools':'▥','teachers':'♙','allocations':'◷','classes':'▤','requests':'⇄'}.get(key,'▦') }}</div><span>{{ {'schools':'Maktablar','teachers':'O‘qituvchilar','allocations':'Yuklamalar','classes':'Sinflar','requests':'Kutilayotgan so‘rovlar'}.get(key,key) }}</span><strong>{{value}}</strong><small>Aktual maʼlumot</small></div>{% endfor %}</div>
+<div class="row g-4 mt-2"><div class="col-lg-8"><div class="panel"><h3>Jarayonlar ketma-ketligi</h3><div class="process-list">
+<div><b>01</b><span>Maktab va foydalanuvchilarni yaratish<small>Tuman administratori</small></span></div>
+<div><b>02</b><span>Xodim, sinf, fan va setkani kiritish<small>Maktab administratori</small></span></div>
+<div><b>03</b><span>3271 bo‘yicha yuklamani tekshirish<small>Ustuvorlik + pedagogik kengash</small></span></div>
+<div><b>04</b><span>Soatlar so‘rovi, 823 ustamalarini yuritish<small>O‘qituvchi + maktab ishchi guruhi</small></span></div></div></div></div>
+<div class="col-lg-4"><div class="panel soft-panel"><h3>Huquqiy eslatma</h3><p>Avtomatik taqsimot <b>tavsiya</b> beradi, yakuniy rasmiy qaror emas. 3271 ning 15–17-bandlari va 823 ning ishchi guruh qoidalari tekshiriladi.</p><a href="https://lex.uz/acts/-4919258" target="_blank" rel="noopener">3271-son nizom ↗</a><a href="https://lex.uz/docs/-4532496" target="_blank" rel="noopener">823-son qaror ↗</a></div></div></div>
+{% endblock %}

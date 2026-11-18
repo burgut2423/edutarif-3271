@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="uz"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}EduTarif{% endblock %} — EduTarif 3271</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="/static/style.css" rel="stylesheet"></head><body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <a class="brand" href="/"><span class="brand-mark">E</span><span>Edu<span class="brand-highlight">Tarif</span><small>3271 · 823 boshqaruv</small></span></a>
+ <div class="side-meta">BOSHQARUV PANELI</div>
+ <nav class="nav-stack">
+  <a href="/" class="nav-link"><span class="nav-ico">▦</span> Dashboard</a>
+  {% if user.role=='district_admin' %}
+  <a href="/district/schools" class="nav-link"><span class="nav-ico">▥</span> Maktablar</a>
+  <a href="/district/settings" class="nav-link"><span class="nav-ico">⚙</span> O‘quv yili va fanlar</a>
+  <a href="/district/audit" class="nav-link"><span class="nav-ico">◴</span> Audit tarixi</a>
+  {% elif user.role=='school_admin' %}
+  <a href="/school/staff" class="nav-link"><span class="nav-ico">♙</span> Xodimlar</a>
+  <a href="/school/classes" class="nav-link"><span class="nav-ico">▤</span> Sinflar</a>
+  <a href="/school/grid" class="nav-link"><span class="nav-ico">▦</span> Soatlar setkasi</a>
+  <a href="/school/allocations" class="nav-link"><span class="nav-ico">◷</span> Dars taqsimoti</a>
+  <a href="/school/requests" class="nav-link"><span class="nav-ico">⇄</span> So‘rovlar</a>
+  <a href="/bonus" class="nav-link"><span class="nav-ico">☆</span> 823 ustamalari</a>
+  {% elif user.role=='bonus_committee' %}
+  <a href="/bonus" class="nav-link"><span class="nav-ico">☆</span> Ishchi guruh qarorlari</a>
+  {% elif user.role=='teacher' %}
+  <a href="/me" class="nav-link"><span class="nav-ico">◷</span> Mening soatlarim</a>
+  {% endif %}
+ </nav>
+ <div class="side-footer"><div class="compliance">● <span>Me'yoriy nazorat moduli</span></div><small>3271-1 · 2026-08-01<br>VMQ 823 · o‘zgartirishlar</small></div>
+</aside>
+<div class="content-wrap">
+<header class="topbar"><button class="menu-toggle" type="button" onclick="document.getElementById('sidebar').classList.toggle('shown')">☰</button>
+ <div class="top-title"><span>Ta'lim muassasalari boshqaruv tizimi</span><small>{% if active_year %}{{ active_year.name }} o‘quv yili{% else %}Faol o‘quv yili belgilanmagan{% endif %}</small></div>
+ <div class="user-menu"><span class="avatar">{{ user.full_name[0] | upper }}</span><div><strong>{{ user.full_name }}</strong><small>{{ {'district_admin':'Tuman administratori','school_admin':'Maktab administratori','teacher':'O‘qituvchi','bonus_committee':'823 ishchi guruh'} .get(user.role,user.role) }}</small></div>
+ <form method="post" action="/logout"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="logout" title="Chiqish">↪</button></form></div>
+</header>
+<main class="main-content">
+{% if request.query_params.get('msg') %}<div class="alert alert-success py-2">✓ {{ request.query_params.get('msg') }}</div>{% endif %}
+{% block content %}{% endblock %}
+<footer class="app-footer">EduTarif 3271 · Demo/MVP · Yakuniy tarifikatsiya uchun vakolatli shaxslarning tasdig‘i shart.</footer>
+</main></div></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script><script src="/static/app.js"></script>{% block scripts %}{% endblock %}
+</body></html>

@@ -53,7 +53,7 @@ Qolgan ishlar, dependency va acceptance criteria: `skills/edutarif-development/r
 
 ### Latest change
 
-- **2026-11-19 — AI agent hujjatlari qo‘shildi:** `AGENTS.md`, `CLAUDE.md`, `.github/copilot-instructions.md`, `skills/edutarif-development/SKILL.md`, `references/` va `docs/AI_HANDOFF.md`. Kodning mavjud ish mantiqi o‘zgartirilmagan.
+- **2026-11-19 — AI agent hujjatlari qo‘shildi:** `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/edutarif.mdc`, `.claude/skills/edutarif-development/SKILL.md`, `.github/copilot-instructions.md`, `skills/edutarif-development/SKILL.md`, `references/` va `docs/AI_HANDOFF.md`. Kodning mavjud ish mantiqi o‘zgartirilmagan.
 
 ### Done / Tests
 

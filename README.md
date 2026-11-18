@@ -114,7 +114,7 @@ izchil davom ettirishi uchun alohida hujjatlar bilan taʼminlangan:
 - **`skills/edutarif-development/SKILL.md`** — asosiy portable skill (YAML frontmatter va bosqichma-bosqich protokol).
 - **`skills/edutarif-development/references/`** — 3271, 823, arxitektura, test, xavfsizlik, integratsiya, UX/workflow va backlog.
 - **`docs/AI_HANDOFF.md`** — keyingi agentga aniq holat, bajarilmagan ishlar va tayyor start prompt.
-- **`CLAUDE.md`, `.github/copilot-instructions.md`** — agentlardan avtomatik o‘qilishi mumkin bo‘lgan kirish ko‘rsatmalari.
+- **`CLAUDE.md`, `GEMINI.md`, `.cursor/rules/edutarif.mdc`, `.claude/skills/edutarif-development/SKILL.md`, `.github/copilot-instructions.md`** — turli agentlarning avtomatik kirish fayllari.
 
 Agentga boshlash topshirig‘i: *`AGENTS.md` va `docs/AI_HANDOFF.md` ni o‘qi,
 `skills/edutarif-development/SKILL.md` ga amal qil, birinchi P0 taskni test bilan bajar.*

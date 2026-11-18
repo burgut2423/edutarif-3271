@@ -1,0 +1,11 @@
+---
+description: EduTarif 3271/823 project-wide rules for all coding, architecture, database, domain, role-permission and UI work
+globs:
+alwaysApply: true
+---
+
+# EduTarif development
+
+Read `AGENTS.md` and `docs/AI_HANDOFF.md` **before** editing. Follow `skills/edutarif-development/SKILL.md` and task-relevant `skills/edutarif-development/references/*.md`.
+
+Only change one backlog task at a time; add tests and handoff updates. Keep `school_id` isolation, 3271/823 separation, legal effective dates, 1–4 vs 5–11 rules, approved workflow/audit, and personal data security. An MVP calculation does not certify a legal tariff or payable award.

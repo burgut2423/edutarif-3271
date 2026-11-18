@@ -6,7 +6,8 @@ REF = ROOT / 'skills' / 'edutarif-development' / 'references'
 
 
 def test_agent_handoff_files_exist():
-    for name in ('AGENTS.md', 'CLAUDE.md', '.github/copilot-instructions.md',
+    for name in ('AGENTS.md', 'CLAUDE.md', 'GEMINI.md', '.cursor/rules/edutarif.mdc',
+                 '.claude/skills/edutarif-development/SKILL.md', '.github/copilot-instructions.md',
                  '.github/pull_request_template.md', 'docs/AI_HANDOFF.md',
                  'skills/edutarif-development/SKILL.md'):
         assert (ROOT / name).is_file(), name

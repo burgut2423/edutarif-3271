@@ -10,7 +10,7 @@ from .db import get_db
 from .models import School,Employee,Allocation,HourChangeRequest,BonusAssessment,AuditLog,User,ClassGroup
 from .security import current_user
 from .ui import page
-from .controllers import auth,district,school,teacher,bonus
+from .controllers import auth,district,school,teacher,bonus,matrix
 
 app=FastAPI(title='EduTarif 3271',version='0.1.0',docs_url=None,redoc_url=None)
 SECRET=os.getenv('SESSION_SECRET')
@@ -19,7 +19,7 @@ if not SECRET or len(SECRET)<32 or SECRET.startswith('CHANGE_ME'):
 app.add_middleware(SessionMiddleware,secret_key=SECRET,https_only=os.getenv('COOKIE_SECURE','false').lower()=='true',
                    same_site='lax',max_age=60*60*8)
 app.mount('/static',StaticFiles(directory='app/static'),name='static')
-for router in [auth.router,district.router,school.router,teacher.router,bonus.router]:
+for router in [auth.router,district.router,school.router,teacher.router,bonus.router,matrix.router]:
     app.include_router(router)
 
 @app.exception_handler(401)

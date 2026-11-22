@@ -132,6 +132,30 @@ def add_class(request:Request,grade:int=Form(...),section:str=Form(...),
     db.add(c);db.flush();audit(db,u,'class.create',u.school_id,'class',c.id)
     db.commit();return back('/school/classes','Sinf qo‘shildi')
 
+# Adopted and hardened from darstaqsimot ClassesModule: batch parallel creation.
+PARALLEL_SECTIONS = ('A', 'B', 'V', 'G', 'D', 'E', 'J', 'Z', 'I', 'K', 'L', 'M', 'N')
+
+@router.post('/classes/batch')
+def add_classes_batch(request:Request, grade:int=Form(...), count:int=Form(...),
+    student_count:int=Form(28), language:str=Form('uz'), csrf:str=Form(...),
+    db:Session=Depends(get_db)):
+    u=admin(request,db);check_csrf(request,csrf);y=active_year(db)
+    if not 1<=grade<=11 or not 1<=count<=10 or not 1<=student_count<=60 or language not in ('uz','ru','qq','other'):
+        raise HTTPException(400,'Sinf, parallel, til yoki o‘quvchi soni noto‘g‘ri')
+    existing=set(db.scalars(select(ClassGroup.section).where(ClassGroup.school_id==u.school_id,
+        ClassGroup.year_id==y.id,ClassGroup.grade==grade,ClassGroup.language==language)).all())
+    available=[s for s in PARALLEL_SECTIONS if s not in existing]
+    if len(available)<count:
+        raise HTTPException(409,'Bo‘sh parallel yetarli emas; sinflarni alohida yarating')
+    for section in available[:count]:
+        klass=ClassGroup(school_id=u.school_id,year_id=y.id,grade=grade,section=section,
+                         student_count=student_count,language=language,approved=False)
+        db.add(klass);db.flush()
+        audit(db,u,'class.batch.create',u.school_id,'class',klass.id,
+              f'grade={grade}; section={section}; year={y.id}')
+    db.commit()
+    return back('/school/classes',f'{count} ta sinf loyihasi yaratildi; tasdiqlash alohida')
+
 @router.post('/classes/{class_id}/approve')
 def approve_class(class_id:int,request:Request,csrf:str=Form(...),db:Session=Depends(get_db)):
     u=admin(request,db);check_csrf(request,csrf);c=scoped_class(db,u.school_id,class_id)

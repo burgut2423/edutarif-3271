@@ -131,3 +131,12 @@ izchil davom ettirishi uchun alohida hujjatlar bilan taʼminlangan:
 Agentga boshlash topshirig‘i: *`AGENTS.md` va `docs/AI_HANDOFF.md` ni o‘qi,
 `skills/edutarif-development/SKILL.md` ga amal qil, birinchi P0 taskni test bilan bajar.*
 Skill huquqiy ekspertiza yoki haqiqiy moliyaviy tasdiq o‘rnini bosmaydi.
+
+## `darstaqsimot`dan olingan modullar (2026-11-23)
+
+Manba: [burgut2423/darstaqsimot](https://github.com/burgut2423/darstaqsimot).
+Mavjud React demo ilovasi butunlay ko‘chirilmagan; uning sinflarni ommaviy yaratish va
+sinf–fan soat matritsasi **server-backed** funksiyalarga moslashtirilgan.
+Maktab admin uchun: `/school/classes` → **Ommaviy yaratish**, `/school/matrix` → **Sinf–fan matritsasi** → **CSV eksport**.
+Batafsil taqqoslash, xavfli algoritmlarni rad qilish va keyingi integratsiya: [`docs/DARSTAQSIMOT_REUSE.md`](docs/DARSTAQSIMOT_REUSE.md).
+Bu sahifalar o‘quv rejasi tasdiqlash yoki avtomatik dars taqsimlash jarayoni emas.

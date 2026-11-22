@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Sinf–fan matritsasi{% endblock %}
+{% block content %}
+<div class="page-title">
+ <div><div class="eyebrow">O‘QUV REJASI · {{year.name}}</div><h1>Sinf–fan–soat matritsasi</h1>
+ <p>1–11-sinflar, fanlar va guruhlarga bo‘lingan pedagogik soatlar bo‘yicha ko‘rinish.</p></div>
+ <div class="d-flex flex-wrap gap-2">
+  <a class="btn btn-outline-primary" href="/school/matrix/export.csv{% if selected_grade %}?grade={{selected_grade}}{% endif %}">CSV yuklash</a>
+  <a class="btn btn-primary" href="/school/grid">Setkaga fan qo‘shish</a>
+ </div>
+</div>
+<div class="notice">⚠ Ushbu matritsa <b>tasdiqlangan o‘quv reja o‘rnini bosmaydi</b>. Guruhlar soni fan turiga qarab avtomatik ko‘paytirilmaydi; manba va tasdiq maktab ma'muriyati tomonidan alohida tekshiriladi. 3271 bo‘yicha pedagogni tanlash va 823 ustamalari bu ekranda amalga oshirilmaydi.</div>
+<div class="matrix-kpi-grid mb-4">
+ <div class="matrix-kpi"><small>Sinflar</small><strong>{{matrix.totals.class_count}}</strong><span>Joriy o‘quv yili</span></div>
+ <div class="matrix-kpi"><small>O‘quv soatlari</small><strong>{{'%.1f'|format(matrix.totals.learning_hours)}}</strong><span>Guruhlarni ko‘paytirmasdan</span></div>
+ <div class="matrix-kpi"><small>Pedagogik soatlar</small><strong>{{'%.1f'|format(matrix.totals.teacher_hours)}}</strong><span>Guruhlar hisobida</span></div>
+ <div class="matrix-kpi"><small>Taqsimlanmagan</small><strong class="text-warning">{{'%.1f'|format(matrix.totals.remaining_hours)}}</strong><span>Joriy taqsimot loyihasida</span></div>
+ <div class="matrix-kpi"><small>Tekshirilmagan satrlar</small><strong>{{matrix.totals.unverified_lines}}</strong><span>Manba va sinf tasdig‘i</span></div>
+</div>
+<div class="panel mb-4">
+ <div class="panel-heading"><h3>Sinflar kesimida soatlar</h3>
+ <form class="d-flex align-items-center gap-2" action="/school/matrix" method="get">
+  <label class="small text-muted" for="grade">Sinf darajasi</label>
+  <select id="grade" name="grade" class="form-select form-select-sm" onchange="this.form.submit()">
+   <option value="">Barchasi (1–11)</option>
+   {% for g in range(1,12) %}<option value="{{g}}" {% if selected_grade==g %}selected{% endif %}>{{g}}-sinf</option>{% endfor %}
+  </select>
+  <noscript><button class="btn btn-outline-primary btn-sm">Tanlash</button></noscript>
+ </form></div>
+ <div class="table-responsive matrix-scroller"><table class="table app-table matrix-table align-middle">
+ <thead><tr><th scope="col" class="matrix-class-col">Sinf / til</th>
+ {% for subject in matrix.subjects %}<th scope="col" title="{{subject.name}}">{{subject.name}}</th>{% endfor %}
+ <th scope="col">O‘quv soati</th><th scope="col">Pedagogik soat</th><th scope="col">Bo‘sh</th></tr></thead>
+ <tbody>
+ {% for cls in matrix.classes %}<tr>
+ <th scope="row" class="matrix-class-col"><b>{{cls.label}}</b><small>{{cls.language}} · {{cls.student_count}} o‘quvchi</small></th>
+ {% for cell in cls.cells %}<td class="matrix-cell {% if cell and not cell.verified %}matrix-unverified{% endif %}">
+ {% if cell %}
+ <div class="matrix-cell-content" title="O‘quv: {{cell.learning_hours}}, Guruh: {{cell.groups}}, Pedagogik: {{cell.teacher_hours}}, Taqsimlangan: {{cell.allocated_hours}}, Bo‘sh: {{cell.remaining_hours}}">
+ <strong>{{'%g'|format(cell.learning_hours)}}{% if cell.groups>1 %} ×{{cell.groups}}{% endif %}</strong>
+ <small>{{'%g'|format(cell.allocated_hours)}} / {{'%g'|format(cell.teacher_hours)}} taq.</small>
+ {% if not cell.verified %}<span class="matrix-warning" title="Sinf yoki fan setkasi tasdiqlanmagan">Tekshirilmagan</span>{% elif cell.remaining_hours>0 %}<span class="matrix-waiting">{{'%g'|format(cell.remaining_hours)}} bo‘sh</span>{% else %}<span class="matrix-ok">To‘liq</span>{% endif %}
+ <a class="matrix-detail" href="/school/allocations/preview/{{cell.line_id}}">Taqsimotni ko‘rish</a>
+ </div>{% else %}<span class="matrix-na">—</span>{% endif %}
+ </td>{% endfor %}
+ <td><b>{{'%g'|format(cls.learning_hours)}}</b></td>
+ <td><b>{{'%g'|format(cls.teacher_hours)}}</b></td>
+ <td><b>{{'%g'|format(cls.remaining_hours)}}</b></td>
+ </tr>{% else %}<tr><td colspan="{{matrix.subjects|length+4}}" class="empty">Sinf yoki fan soatlari topilmadi. Avval sinflar va setka yarating.</td></tr>{% endfor %}
+ </tbody></table></div>
+</div>
+<div class="row g-3">
+ <div class="col-lg-7"><div class="panel h-100"><div class="panel-heading"><h3>Fanlar kesimida umumiy soatlar</h3></div>
+ <div class="table-responsive"><table class="table app-table"><thead><tr><th>Fan</th><th>O‘quv</th><th>Pedagogik</th><th>Taqsimlangan</th><th>Bo‘sh</th></tr></thead><tbody>
+ {% for s in matrix.subject_totals %}<tr><td>{{s.name}}</td><td>{{'%g'|format(s.learning_hours)}}</td><td>{{'%g'|format(s.teacher_hours)}}</td><td>{{'%g'|format(s.allocated_hours)}}</td><td>{{'%g'|format(s.remaining_hours)}}</td></tr>
+ {% else %}<tr><td colspan="5" class="empty">Hozircha fan yo‘q</td></tr>{% endfor %}
+ </tbody></table></div></div></div>
+ <div class="col-lg-5"><div class="panel h-100"><div class="panel-heading"><h3>Bosqichlar va nazorat</h3></div>
+ <div class="matrix-stages"><div><span>1–4-sinflar, jami pedagogik soat</span><b>{{'%g'|format(matrix.totals.primary_teacher_hours)}}</b></div>
+ <div><span>5–11-sinflar, jami pedagogik soat</span><b>{{'%g'|format(matrix.totals.upper_teacher_hours)}}</b></div>
+ <div><span>Guruhlarga bo‘lingan setka satrlari</span><b>{{matrix.totals.grouped_lines}}</b></div>
+ <div><span>Tekshirilmagan setka satrlari</span><b>{{matrix.totals.unverified_lines}}</b></div></div>
+ <p class="text-muted small mt-3 mb-0">Fan bo‘yicha xulosa — faqat mavjud ma’lumotlar nazorati, rasmiy o‘quv rejaga moslik avtomatik tasdiqlanmagan.</p>
+ </div></div>
+</div>
+{% endblock %}

@@ -81,3 +81,12 @@ Qolgan ishlar, dependency va acceptance criteria: `skills/edutarif-development/r
 ```text
 Siz burgut2423/edutarif-3271 private GitHub repositorysidagi EduTarif 3271/823 tizimini rivojlantiruvchi agent siz. Avval AGENTS.md, docs/AI_HANDOFF.md, README.md va skills/edutarif-development/SKILL.md fayllarini to‘liq o‘qing. Keyin references/BACKLOG.md dagi birinchi ochiq P0 taskni tanlang, testlarni ishga tushiring, kerakli kod/model/controller/view/migration/testni yarating. 1–4 va 5–11 meʼyorlarini aralashtirmang; 3271 va 823 vakolatlari alohida. Har bir so‘rovda rol + school_id + year_id + CSRF + audit, moliyada Decimal, huquqiy noaniqlikda manual review. Yangi normativni faqat rasmiy Lex.uz va tegishli vazirlik manbasi, amal qilish sanasi bilan ishlating. Mavjud ishlaydigan kodni buzmasdan, test qo‘shib, GitHub PR/commit tayyorlang. Oxirida docs/AI_HANDOFF.md ni yangilang va real test natijasini, qilingan ishlar va qolgan risklarni yozing.
 ```
+
+### 2026-11-23 — `darstaqsimot` selektiv integratsiyasi
+
+- Manba: `burgut2423/darstaqsimot`, `main` = `c84983ecff3af0f90e3494050791a266b611d3b6`.
+- `POST /school/classes/batch`: 1–11-sinf, 1–10 yangi parallel, takrorlanmaydi, maktab/year scoped, draft + CSRF + audit.
+- `GET /school/matrix` va `/school/matrix/export.csv`: maktabga tegishli sinf–fan matritsasi, guruhlar orqali o‘quv soati/pedagogik soat alohida, bo‘sh soat, tasdiqlanish holati, CSV formula injection cheklovi.
+- Kod: `app/controllers/matrix.py`, `app/curriculum_matrix.py`, `app/templates/matrix.html`, `tests/test_reused_darstaqsimot.py`.
+- Manbadagi avtomatik soat taqsimlash va 823 kalkulyatori tekshiruvsiz ko‘chirilmagan: `docs/DARSTAQSIMOT_REUSE.md`.
+- Keyingi agent bu joriy read-only natijani rasmiy fan-soatlar setkasi deb e'lon qilmasin; tasdiqlash va huquqiy mapping alohida.
